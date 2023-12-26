@@ -22,7 +22,7 @@ const Admin = () => {
         {doctors.map(doctor => (
           <li key={doctor._id}>
             <strong>{doctor.name}</strong> - Especialidad: {doctor.speciality.name}{' '}
-            <Link to={`/doctor/details/${doctor._id}`}>Ver Detalles</Link>
+            <Link to={`/doctor/${doctor._id}`}>Ver Detalles</Link>
           </li>
         ))}
       </ul>

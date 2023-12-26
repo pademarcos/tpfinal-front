@@ -21,3 +21,21 @@ export const getDoctorsList = async () => {
       return { doctor: {}, appointments: {} };
     }
   };
+
+  export const addDoctor = async (doctorData) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/doctors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(doctorData),
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error al agregar el médico:', error);
+      throw error; // Puedes decidir manejar el error de otra manera según tus necesidades
+    }
+  };
