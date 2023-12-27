@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState(null);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -28,17 +29,27 @@ const Login = () => {
       const tokenData = await response.json();
       const token = tokenData.token; 
 
-      // onLogin({ token });
+      setToken(token);
+
+      sessionStorage.setItem('token', token);
+      
       const decodedToken = jwtDecode(token);
       if (decodedToken.admin) {
-        navigate('/admin');  // Redirige a la página de administrador
+        navigate('/admin');  
       } else {
-        navigate('/paciente');  // Redirige a la página de paciente
+        navigate('/paciente');  
       }
     } catch (error) {
       console.error('Error de inicio de sesión:', error.message);
     }
   };
+ const addAuthorizationHeader = (headers) => {
+  if (token) {
+     headers.Authorization = `Bearer ${token}`;
+    }
+   return headers;
+  };
+console.log(addAuthorizationHeader)
 
   const handlePasswordRecovery = () => {
     // recuperar contraseña
