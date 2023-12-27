@@ -1,13 +1,13 @@
-export const getDoctorsList = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/doctors');
-      const data = await response.json();
-      return data.doctors;
-    } catch (error) {
-      console.error('Error al obtener la lista de doctores:', error);
-      return { doctor: {}, appointments: {} };
-    }
-  };
+export const getDoctorsList = async (page, pageSize) => {
+  try {
+    const response = await fetch(`http://localhost:3001/api/doctors?page=${page}&pageSize=${pageSize}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener la lista de doctores:', error);
+    return { doctors: [], totalPages: {} }; 
+  }
+};
   
   export const getDoctorDetails = async (doctorId) => {
     try {
@@ -39,5 +39,24 @@ export const getDoctorsList = async () => {
     } catch (error) {
       console.error('Error al agregar el médico:', error);
       throw error; 
+    }
+  };
+
+  export const updateDoctor = async (doctorId, doctorData, token) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/doctors/${doctorId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(doctorData),
+      });
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error al modificar el médico:', error);
+      throw error;
     }
   };
