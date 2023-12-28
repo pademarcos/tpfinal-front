@@ -141,7 +141,7 @@ const Admin = () => {
           <input
             type="text"
             name="name"
-            value={isEditing ? selectedDoctor.name : newDoctor.name}
+            value={isEditing && selectedDoctor ? selectedDoctor.name : newDoctor.name}
             onChange={handleChange}
             required
           />
@@ -150,7 +150,7 @@ const Admin = () => {
           Especialidad:
           <select
             name="speciality"
-            value={isEditing ? selectedDoctor.speciality.name : newDoctor.speciality}
+            value={isEditing && selectedDoctor ? selectedDoctor.speciality.name : newDoctor.speciality}
             onChange={handleChange}
             required
           >

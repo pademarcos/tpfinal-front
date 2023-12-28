@@ -49,7 +49,7 @@ const Login = () => {
     }
    return headers;
   };
-console.log(addAuthorizationHeader)
+
 
   const handlePasswordRecovery = () => {
     // recuperar contraseña
