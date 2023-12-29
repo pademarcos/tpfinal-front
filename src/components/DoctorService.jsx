@@ -44,7 +44,6 @@ export const getDoctorsList = async (page, pageSize) => {
 
   export const updateDoctor = async (doctorId, doctorData, token) => {
     try {
-      console.log('Updating Doctor:', doctorData); 
       const response = await fetch(`http://localhost:3001/api/doctors/${doctorId}`, {
         method: 'PUT',
         headers: {

@@ -4,6 +4,13 @@ import { TextField, Button, Link, Grid, Typography, Paper, Modal } from '@mui/ma
 import RegisterForm from './Registro';
 import { jwtDecode } from 'jwt-decode';
 
+export const addAuthorizationHeader = (headers, token) => {
+  if (token) {
+     headers.Authorization = `Bearer ${token}`;
+    }
+   return headers;
+  };
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,12 +50,7 @@ const Login = () => {
       console.error('Error de inicio de sesión:', error.message);
     }
   };
- const addAuthorizationHeader = (headers) => {
-  if (token) {
-     headers.Authorization = `Bearer ${token}`;
-    }
-   return headers;
-  };
+
 
 
   const handlePasswordRecovery = () => {
