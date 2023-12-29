@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getDoctorsList, addDoctor, updateDoctor, getDoctorDetails } from '../components/DoctorService';
 import { getSpecialitiesList } from '../components/SpecialityService';
-import { addAuthorizationHeader } from '../components/Login';
 
 const PAGE_SIZE = 10;
 
@@ -81,7 +80,7 @@ const Admin = () => {
       if (isEditing) {
         await updateDoctor(selectedDoctor._id, selectedDoctor, token);
       } else {
-        await addDoctor(addAuthorizationHeader(newDoctor, token), token);
+        await addDoctor(newDoctor, token);
       }
 
       // Actualizar la lista después de agregar o modificar el médico

@@ -38,7 +38,7 @@ const Login = () => {
 
       setToken(token);
 
-      sessionStorage.setItem('token', token);
+     sessionStorage.setItem('token', token);
       
       const decodedToken = jwtDecode(token);
       if (decodedToken.admin) {
