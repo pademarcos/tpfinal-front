@@ -42,9 +42,9 @@ export const getDoctorsList = async (page, pageSize) => {
     }
   };
 
-  export const updateDoctor = async (doctorId, doctorData, token) => {
+  export const updateDoctor = async (doctorData, token) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/doctors/${doctorId}`, {
+      const response = await fetch(`http://localhost:3001/api/doctors/${doctorData._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

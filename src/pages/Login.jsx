@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Link, Grid, Typography, Paper, Modal } from '@mui/material';
-import RegisterForm from './Registro';
+import RegisterForm from '../components/Registro';
 import { jwtDecode } from 'jwt-decode';
 
 export const addAuthorizationHeader = (headers, token) => {
@@ -38,7 +38,7 @@ const Login = () => {
 
       setToken(token);
 
-     sessionStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
       
       const decodedToken = jwtDecode(token);
       if (decodedToken.admin) {
