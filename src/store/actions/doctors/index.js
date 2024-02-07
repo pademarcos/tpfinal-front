@@ -61,4 +61,16 @@ export const updateDoctor = (doctorData, token) => async (dispatch) => {
     }
   };
   
-
+  export const fetchDoctorsBySpeciality = (specialityName) => async (dispatch) => {
+    try {
+      dispatch(startDoctorsLoading());
+  
+      const response = await fetch(`http://localhost:3001/api/doctors/speciality/${specialityName}`);
+      const data = await response.json();
+      
+      dispatch({ type: 'FETCH_DOCTORS_BY_SPECIALITY', payload: data });
+    } catch (error) {
+      console.error('Error al obtener la lista de doctores por especialidad:', error);
+      dispatch({ type: 'FETCH_DOCTORS_BY_SPECIALITY', payload: [] }); 
+    }
+  };

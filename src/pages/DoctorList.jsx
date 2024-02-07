@@ -5,13 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Typography, Paper, Button, List, ListItem } from '@mui/material';
 
 
-const DoctorDetails = () => {
+const DoctorList = () => {
   const { doctorDetails } = useSelector(state => state.doctors);
   const dispatch = useDispatch();
   const { doctorId } = useParams();
+
   useEffect(() => {
    dispatch(getDoctorDetails(doctorId));
-  }, []);
+  }, [doctorId, dispatch]);
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
@@ -35,7 +37,7 @@ const DoctorDetails = () => {
               <Typography variant="body1">No hay turnos disponibles</Typography>
             )}
             
-            <Link to="/admin">
+            <Link to="/paciente">
               <Button variant="contained" style={{ marginTop: '10px' }}>Volver a la lista de doctores</Button>
             </Link>
           </>
@@ -47,4 +49,4 @@ const DoctorDetails = () => {
   );
 };
 
-export default DoctorDetails;
+export default DoctorList;

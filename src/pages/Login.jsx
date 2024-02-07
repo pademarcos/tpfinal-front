@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Link, Grid, Typography, Paper, Modal } from '@mui/material';
 import RegisterForm from '../components/Registro';
 import { jwtDecode } from 'jwt-decode';
+import { setLoginData } from '../store/actions/login';
 
 export const addAuthorizationHeader = (headers, token) => {
   if (token) {
@@ -14,9 +16,11 @@ export const addAuthorizationHeader = (headers, token) => {
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState(null);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { username: storedUsername, token } = useSelector(state => state.login);
+
 
   const handleLogin = async () => {
     try {
@@ -36,7 +40,7 @@ const Login = () => {
       const tokenData = await response.json();
       const token = tokenData.token; 
 
-      setToken(token);
+      dispatch(setLoginData(username, token));
 
       sessionStorage.setItem('token', token);
       

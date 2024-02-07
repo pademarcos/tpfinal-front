@@ -22,6 +22,13 @@ export const doctorsReducer = (state = initialState, action) => {
           isLoading: false
       };
 
+    case 'FETCH_DOCTORS_BY_SPECIALITY':
+      return {
+          ...state,
+          doctors: action.payload.doctors,
+          isLoading: false
+      };
+
     case 'GET_DETAILS':
       return{
         ...state,
