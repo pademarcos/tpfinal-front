@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Link, Grid, Typography, Paper, Modal } from '@mui/material';
 import RegisterForm from '../components/Registro';
 import { jwtDecode } from 'jwt-decode';
-import { setLoginData } from '../store/actions/login';
+import { setLoginData, setUsername, setPassword } from '../store/actions/login';
 
 export const addAuthorizationHeader = (headers, token) => {
   if (token) {
@@ -14,13 +14,12 @@ export const addAuthorizationHeader = (headers, token) => {
   };
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const username = useSelector(state => state.login.username);
+  const password = useSelector(state => state.login.password);
+  const [isAdmin, setIsAdmin] = useState(null);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { username: storedUsername, token } = useSelector(state => state.login);
-
 
   const handleLogin = async () => {
     try {
@@ -42,9 +41,11 @@ const Login = () => {
 
       dispatch(setLoginData(username, token));
 
-      sessionStorage.setItem('token', token);
+
+      localStorage.setItem('token', token);
       
       const decodedToken = jwtDecode(token);
+      setIsAdmin(decodedToken.admin);
       if (decodedToken.admin) {
         navigate('/admin');  
       } else {
@@ -84,7 +85,7 @@ const Login = () => {
             margin="normal"
             fullWidth
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => dispatch(setUsername(e.target.value))}
           />
           <TextField
             label="Password"
@@ -93,7 +94,7 @@ const Login = () => {
             margin="normal"
             fullWidth
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => dispatch(setPassword(e.target.value))}
           />
           <Button variant="contained" color="primary" fullWidth onClick={handleLogin} style={{ marginTop: '10px' }}>
             Iniciar Sesión

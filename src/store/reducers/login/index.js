@@ -1,7 +1,9 @@
 const initialState = {
-    username: '',
-    token: null,
-  };
+  username: localStorage.getItem('username') || '',
+  password: '',
+  token: localStorage.getItem('token') || '',
+  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+};
   
   export const loginReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -10,14 +12,29 @@ const initialState = {
           ...state,
           username: action.payload.username,
           token: action.payload.token,
+          isAuthenticated: true,
         };
+
+        case 'SET_USERNAME':
+          return {
+            ...state,
+            username: action.payload,
+          };
+    
+        case 'SET_PASSWORD':
+          return {
+            ...state,
+            password: action.payload,
+          };
   
-      case 'CLEAR_LOGIN_DATA':
-        return {
-          ...state,
-          username: '',
-          token: null,
-        };
+        case 'CLEAR_LOGIN_DATA':
+          return {
+            ...state,
+            username: '',
+            password: '',
+            token: '',
+            isAuthenticated: false,
+          };
   
       default:
         return state;

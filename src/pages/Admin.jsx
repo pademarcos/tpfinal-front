@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import { addDoctor, updateDoctor } from '../store/actions/doctors';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchDoctors } from '../store/actions/doctors';
+import { clearLoginData } from '../store/actions/login';
 import { fetchSpecialities } from '../store/actions/specialities';
 import { Container, Typography, List, ListItem, Button, Grid, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const PAGE_SIZE = 10;
 
 const Admin = () => {
+  const { isAuthenticated, username } = useSelector(state => state.login);
   const { doctors, isLoading, totalPages, currentPage } = useSelector(state => state.doctors);
   const { specialities } = useSelector(state => state.specialities);
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
   const [newDoctor, setNewDoctor] = useState({
     name: '',
@@ -23,9 +25,14 @@ const Admin = () => {
     if(isLoading){
       dispatch(fetchDoctors(currentPage, PAGE_SIZE));
       dispatch(fetchSpecialities());
+      setIsAdmin(useSelector(state => state.login.isAdmin));
     }
 
   }, [currentPage, isLoading]);
+
+  const handleLogout = () => {
+    dispatch(clearLoginData());
+  };
 
   const handleEditClick = async (doctor) => {
     setSelectedDoctor(doctor);
@@ -71,9 +78,19 @@ const Admin = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return <Link to="/" />;
+  }
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }} >
+        <Typography variant="h2">Bienvenido, {username} </Typography>
+        <Link to="/">
+            <Button variant="contained" color="primary" onClick={handleLogout}>
+              Cerrar Sesión
+            </Button>
+        </Link>
         <Typography variant="h2">Admin Page</Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
