@@ -50,7 +50,7 @@ const Paciente = () => {
             </Button>
           </Link>
         </>
-        <Typography variant="h1">Pacientes</Typography>
+        <Typography variant="h3">Pacientes</Typography>
         <Typography variant="h5">Seleccione una especialidad:</Typography>
         <Grid>
           <FormControl fullWidth style={{ marginBottom: '10px' }}>

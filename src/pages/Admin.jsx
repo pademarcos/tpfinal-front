@@ -10,10 +10,10 @@ import { Container, Typography, List, ListItem, Button, Grid, Paper, TextField, 
 const PAGE_SIZE = 10;
 
 const Admin = () => {
-  const { isAuthenticated, username } = useSelector(state => state.login);
+  const { isAuthenticated, username} = useSelector(state => state.login);
   const { doctors, isLoading, totalPages, currentPage } = useSelector(state => state.doctors);
   const { specialities } = useSelector(state => state.specialities);
-  const [isAdmin, setIsAdmin] = useState(false);
+  //const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
   const [newDoctor, setNewDoctor] = useState({
     name: '',
@@ -25,9 +25,8 @@ const Admin = () => {
     if(isLoading){
       dispatch(fetchDoctors(currentPage, PAGE_SIZE));
       dispatch(fetchSpecialities());
-      setIsAdmin(useSelector(state => state.login.isAdmin));
+      //setIsAdmin(useSelector((state) => state.login.isAdmin));
     }
-
   }, [currentPage, isLoading]);
 
   const handleLogout = () => {
@@ -91,7 +90,7 @@ const Admin = () => {
               Cerrar Sesión
             </Button>
         </Link>
-        <Typography variant="h2">Admin Page</Typography>
+        <Typography variant="h3">Admin Page</Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Typography variant="h4">Lista de Doctores Disponibles </Typography>

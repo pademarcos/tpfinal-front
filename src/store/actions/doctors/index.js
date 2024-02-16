@@ -74,3 +74,5 @@ export const updateDoctor = (doctorData, token) => async (dispatch) => {
       dispatch({ type: 'FETCH_DOCTORS_BY_SPECIALITY', payload: [] }); 
     }
   };
+
+  

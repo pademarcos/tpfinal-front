@@ -1,16 +1,18 @@
-export const setLoginData = (username, token) => {
-  localStorage.setItem('isAuthenticated', 'true');
-  localStorage.setItem('username', username);
-  localStorage.setItem('token', token);
-  return { type: 'SET_LOGIN_DATA', payload: { username, token } };
-  };
-  
-  export const clearLoginData = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('username');
-    localStorage.removeItem('token');
-    return { type: 'CLEAR_LOGIN_DATA' };
-  };
+export const setLoginData = (username, token, userId) => {
+  sessionStorage.setItem('isAuthenticated', 'true');
+  sessionStorage.setItem('username', username);
+  sessionStorage.setItem('token', token);
+  sessionStorage.setItem('userId', userId);
+  return { type: 'SET_LOGIN_DATA', payload: { username, token, userId } };
+};
+
+export const clearLoginData = () => {
+  sessionStorage.removeItem('isAuthenticated');
+  sessionStorage.removeItem('username');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('userId');
+  return { type: 'CLEAR_LOGIN_DATA' };
+};
 
   export const setUsername = (username) => {
     localStorage.setItem('username', username);

@@ -6,6 +6,7 @@ import Admin from "./pages/Admin";
 import Paciente from "./pages/Paciente";
 import DoctorDetails from './pages/DoctorDetails';
 import DoctorList from './pages/DoctorList';
+import RecoverPassword from './pages/RecoverPassword';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/paciente" element={<Paciente />} />
       <Route path="/doctor/:doctorId" element={<DoctorDetails />} />
       <Route path="/paciente/doctor_list/:doctorId" element={<DoctorList />} />
+      <Route path="/RecoverPassword" element={<RecoverPassword />} />
     </Routes>
   );
 }

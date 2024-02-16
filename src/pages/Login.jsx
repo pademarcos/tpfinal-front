@@ -14,10 +14,13 @@ export const addAuthorizationHeader = (headers, token) => {
   };
 
 const Login = () => {
+  //const userId = useSelector(state => state.login.userId);
   const username = useSelector(state => state.login.username);
   const password = useSelector(state => state.login.password);
+  //const isAdmin = useSelector(state => state.login.isAdmin);
   const [isAdmin, setIsAdmin] = useState(null);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,20 +35,24 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json(); 
         throw new Error(errorData.message || 'Error en la autenticación');
       }
 
       const tokenData = await response.json();
       const token = tokenData.token; 
 
-      dispatch(setLoginData(username, token));
-
-
-      localStorage.setItem('token', token);
-      
       const decodedToken = jwtDecode(token);
+      setUserId(decodedToken.userId);
+
+      dispatch(setLoginData(username, token, isAdmin, userId));
+
+       localStorage.setItem('isAdmin', isAdmin);
+       localStorage.setItem('token', token);
+       localStorage.setItem('userId', userId);
+  
       setIsAdmin(decodedToken.admin);
+
       if (decodedToken.admin) {
         navigate('/admin');  
       } else {
@@ -59,8 +66,7 @@ const Login = () => {
 
 
   const handlePasswordRecovery = () => {
-    // recuperar contraseña
-    console.log('Recuperar Contraseña');
+    navigate('/recoverpassword');
   };
 
   const handleOpenRegisterModal = () => {

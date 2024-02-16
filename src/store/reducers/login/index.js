@@ -3,6 +3,7 @@ const initialState = {
   password: '',
   token: localStorage.getItem('token') || '',
   isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+  userId: localStorage.getItem('userId') || '',
 };
   
   export const loginReducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const initialState = {
           ...state,
           username: action.payload.username,
           token: action.payload.token,
+          userId: action.payload.userId,
           isAuthenticated: true,
         };
 
@@ -33,6 +35,7 @@ const initialState = {
             username: '',
             password: '',
             token: '',
+            userId: '',
             isAuthenticated: false,
           };
   
