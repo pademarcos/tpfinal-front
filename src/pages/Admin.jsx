@@ -13,7 +13,6 @@ const Admin = () => {
   const { isAuthenticated, username} = useSelector(state => state.login);
   const { doctors, isLoading, totalPages, currentPage } = useSelector(state => state.doctors);
   const { specialities } = useSelector(state => state.specialities);
-  //const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
   const [newDoctor, setNewDoctor] = useState({
     name: '',
@@ -25,7 +24,6 @@ const Admin = () => {
     if(isLoading){
       dispatch(fetchDoctors(currentPage, PAGE_SIZE));
       dispatch(fetchSpecialities());
-      //setIsAdmin(useSelector((state) => state.login.isAdmin));
     }
   }, [currentPage, isLoading]);
 
@@ -83,28 +81,34 @@ const Admin = () => {
 
   return (
     <Container>
-      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }} >
-        <Typography variant="h2">Bienvenido, {username} </Typography>
+      <Paper elevation={3} style={{ padding: '20px', marginTop: '20px', marginBottom: '20px', width: '100%' }}>
+        <Typography variant="h3">Administrador</Typography>
+        <Typography variant="h4">Bienvenido, {username} </Typography>
         <Link to="/">
-            <Button variant="contained" color="primary" onClick={handleLogout}>
-              Cerrar Sesión
-            </Button>
+          <Button variant="contained" color="primary" onClick={handleLogout}>
+            Cerrar Sesión
+          </Button>
         </Link>
-        <Typography variant="h3">Admin Page</Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+
+        <Grid container spacing={2} style={{ width: '100%' }}>
+          <Grid item xs={12}>
             <Typography variant="h4">Lista de Doctores Disponibles </Typography>
             <List>
               {doctors && doctors.length > 0 ? (
                 doctors.map((doctor) => (
-                  <ListItem key={doctor._id}>
-                    <strong>{doctor.name}</strong> - Especialidad: {doctor.speciality.name}{' '}
-                    <Button component={Link} to={`/doctor/${doctor._id}`} variant="contained" style={{ marginRight: '10px' }}>
-                     Detalles
-                    </Button>
-                    <Button variant="contained" onClick={() => handleEditClick(doctor) }>
-                      Modificar
-                    </Button>
+                  <ListItem key={doctor._id} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div>
+                      <strong>{doctor.name}</strong> <br />
+                      Especialidad: {doctor.speciality.name}
+                    </div>
+                    <div>
+                      <Button component={Link} to={`/doctor/${doctor._id}`} variant="contained" style={{ marginRight: '10px' }}>
+                        Detalles
+                      </Button>
+                      <Button variant="contained" onClick={() => handleEditClick(doctor)}>
+                        Modificar
+                      </Button>
+                    </div>
                   </ListItem>
                 ))
               ) : (
@@ -164,50 +168,50 @@ const Admin = () => {
                 Agregar Médico
               </Button>
             </form>
-            {selectedDoctor && (
-              <>
-                <Typography variant="h4"  className='updateDoctor'>Modificar Médico</Typography>
-                <form onSubmit={handleUpdateSubmit}>
-                  <TextField
-                    label="Nombre del Médico"
-                    type="text"
-                    name="name"
-                    value={selectedDoctor.name}
-                    onChange={(e) => setSelectedDoctor({ ...selectedDoctor, name: e.target.value })}
-                    required
-                    fullWidth
-                    style={{ marginBottom: '10px' }}
-                  />
-                  <FormControl fullWidth style={{ marginBottom: '10px' }}>
-                    <InputLabel>Especialidad</InputLabel>
-                    <Select
-                      name="speciality"
-                      value={selectedDoctor.speciality.name}
-                      onChange={(e) => setSelectedDoctor({ ...selectedDoctor, speciality: { name: e.target.value } })}
-                      required
-                    >
-                      <MenuItem value="">Seleccione una especialidad</MenuItem>
-                      {specialities.map((speciality) => (
-                        <MenuItem key={speciality._id} value={speciality.name}>
-                          {speciality.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <Button type="submit" variant="contained">
-                    Aceptar Modificación
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={() => setSelectedDoctor(null)}
-                    style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}
-                  >
-                    Cancelar
-                  </Button>
-                </form>
-              </>
-            )}
           </Grid>
+          {selectedDoctor && (
+            <Grid item xs={12} md={6}>
+              <Typography variant="h4" className='updateDoctor'>Modificar Médico</Typography>
+              <form onSubmit={handleUpdateSubmit}>
+                <TextField
+                  label="Nombre del Médico"
+                  type="text"
+                  name="name"
+                  value={selectedDoctor.name}
+                  onChange={(e) => setSelectedDoctor({ ...selectedDoctor, name: e.target.value })}
+                  required
+                  fullWidth
+                  style={{ marginBottom: '10px' }}
+                />
+                <FormControl fullWidth style={{ marginBottom: '10px' }}>
+                  <InputLabel>Especialidad</InputLabel>
+                  <Select
+                    name="speciality"
+                    value={selectedDoctor.speciality.name}
+                    onChange={(e) => setSelectedDoctor({ ...selectedDoctor, speciality: { name: e.target.value } })}
+                    required
+                  >
+                    <MenuItem value="">Seleccione una especialidad</MenuItem>
+                    {specialities.map((speciality) => (
+                      <MenuItem key={speciality._id} value={speciality.name}>
+                        {speciality.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Button type="submit" variant="contained">
+                  Aceptar Modificación
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => setSelectedDoctor(null)}
+                  style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}
+                >
+                  Cancelar
+                </Button>
+              </form>
+            </Grid>
+          )}
         </Grid>
       </Paper>
     </Container>
