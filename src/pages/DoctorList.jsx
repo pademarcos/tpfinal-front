@@ -8,6 +8,8 @@ import { Container, Typography, Paper, Button, List, ListItem } from '@mui/mater
 
 const DoctorList = () => {
   const { doctorDetails } = useSelector(state => state.doctors);
+  const userId = useSelector(state => state.login.userId);
+  const username = useSelector(state => state.login.username);
   const dispatch = useDispatch();
   const { doctorId } = useParams();
 
@@ -15,9 +17,9 @@ const DoctorList = () => {
    dispatch(getDoctorDetails(doctorId));
   }, [doctorId, dispatch]);
 
-  const handleReserveAppointment = (appointmentId) => {
-    const userId = localStorage.getItem('userId'); // Almacenar el userId cuando el usuario inicie sesión !!!!
-    dispatch(reserveAppointment(userId, appointmentId));
+  const handleReserveAppointment = (appointmentId, userId) => {
+    dispatch(reserveAppointment( appointmentId, userId));
+    
   };
 
   return (
@@ -25,10 +27,12 @@ const DoctorList = () => {
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
         <Typography variant="h2">Lista de turnos del Médico</Typography>
 
+        <Typography variant='h4'>Usuario: {username}</Typography>
+
         {doctorDetails?.doctor? (
           <>
             <Typography variant="h4">Nombre del Médico: {doctorDetails.doctor.name || 'Nombre no disponible'}</Typography>
-            <Typography variant="h6">Especialidad: {doctorDetails.doctor.speciality ? doctorDetails.doctor.speciality.name : 'Especialidad no disponible'}</Typography>
+            <Typography variant="h5">Especialidad: {doctorDetails.doctor.speciality ? doctorDetails.doctor.speciality.name : 'Especialidad no disponible'}</Typography>
 
             <Typography variant="h5">Turnos Disponibles</Typography>
             {doctorDetails?.appointments?.data ? (
@@ -43,7 +47,7 @@ const DoctorList = () => {
               <Button
                 variant="contained"
                 style={{ marginTop: '10px' }}
-                onClick={() => handleReserveAppointment(appointment._id)}
+                onClick={() => handleReserveAppointment(appointment._id, userId)}
               >
                 Reservar
               </Button>

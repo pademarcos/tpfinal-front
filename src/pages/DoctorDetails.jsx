@@ -1,17 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getDoctorDetails } from '../store/actions/doctors';
+import { addAppointment } from '../store/actions/appointments';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Typography, Paper, Button, List, ListItem } from '@mui/material';
+import AppointmentForm from '../components/AppointmentForm';
 
 
 const DoctorDetails = () => {
   const { doctorDetails } = useSelector(state => state.doctors);
+  const { addAppointmentError } = useSelector(state => state.appointments);
   const dispatch = useDispatch();
   const { doctorId } = useParams();
+
+  const [showForm, setShowForm] = useState(false); 
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
+
+  const handleAddAppointment = (date) => {
+    console.log(date)
+    dispatch(addAppointment(doctorDetails.doctor._id, date));
+    dispatch(getDoctorDetails(doctorId));
+    toggleForm();
+  };
+
   useEffect(() => {
    dispatch(getDoctorDetails(doctorId));
-  }, []);
+  }, [doctorId, dispatch]);
+
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
@@ -33,6 +56,22 @@ const DoctorDetails = () => {
               </List>
             ) : (
               <Typography variant="body1">No hay turnos disponibles</Typography>
+            )}
+
+            <Button variant="contained" style={{ marginTop: '10px' }} onClick={toggleForm}>
+              Agregar Nuevo Turno
+            </Button>
+
+            {showForm && (
+
+              <div>
+                        <AppointmentForm
+                        selectedDate={selectedDate}
+                        onDateChange={handleDateChange}
+                        onAddAppointment={handleAddAppointment}
+                      />
+                         {addAppointmentError && <Typography variant="body1" color="error">{addAppointmentError}</Typography>}
+                      </div>
             )}
             
             <Link to="/admin">
