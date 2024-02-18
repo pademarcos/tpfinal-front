@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Link, Grid, Typography, Paper, Modal } from '@mui/material';
 import RegisterForm from '../components/Registro';
-import { jwtDecode } from 'jwt-decode';
-import { setLoginData, setUsername, setPassword } from '../store/actions/login';
+import { setUsername, setPassword, login } from '../store/actions/login';
 
 export const addAuthorizationHeader = (headers, token) => {
   if (token) {
@@ -14,57 +13,24 @@ export const addAuthorizationHeader = (headers, token) => {
   };
 
 const Login = () => {
-  const userId = useSelector(state => state.login.userId);
-  const username = useSelector(state => state.login.username);
-  const password = useSelector(state => state.login.password);
-  //const isAdmin = useSelector(state => state.login.isAdmin);
-  const [isAdmin, setIsAdmin] = useState(null);
+  const { username, password, isAdmin, loginReady, clearingLoading } = useSelector(state => state.login);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-  //const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+  const handleLogin = () => {
+    dispatch(login(username, password))
+  }
 
-      if (!response.ok) {
-        const errorData = await response.json(); 
-        throw new Error(errorData.message || 'Error en la autenticación');
-      }
-
-      const tokenData = await response.json();
-      const token = tokenData.token; 
-
-      const decodedToken = jwtDecode(token);
-
-      dispatch(setLoginData(username, token, isAdmin, decodedToken.userId));
-      
-      //setUserId(decodedToken.userId);
-
-      // sessionStorage.setItem('isAdmin', isAdmin);
-      // sessionStorage.setItem('token', token);
-      // sessionStorage.setItem('userId', userId);
-  
-      setIsAdmin(decodedToken.admin);
-
-      if (decodedToken.admin) {
+  useEffect(()=>{
+    if(loginReady){
+      if (isAdmin) {
         navigate('/admin');  
       } else {
         navigate('/paciente');  
       }
-    } catch (error) {
-      console.error('Error de inicio de sesión:', error.message);
     }
-  };
-
-
+  }, [loginReady])
 
   const handlePasswordRecovery = () => {
     navigate('/recoverpassword');

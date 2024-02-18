@@ -58,13 +58,13 @@ const DoctorDetails = () => {
               <Typography variant="body1">No hay turnos disponibles</Typography>
             )}
 
-            <Button variant="contained" style={{ marginTop: '10px' }} onClick={toggleForm}>
+            <Button variant="contained" style={{ marginTop: '10px', marginRight: '20px'}} onClick={toggleForm}>
               Agregar Nuevo Turno
             </Button>
 
             {showForm && (
 
-              <div>
+              <div style={{ marginTop: '10px', marginRight: '20px'}}>
                         <AppointmentForm
                         selectedDate={selectedDate}
                         onDateChange={handleDateChange}

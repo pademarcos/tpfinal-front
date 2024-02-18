@@ -1,35 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { addDoctor, updateDoctor } from '../store/actions/doctors';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchDoctors } from '../store/actions/doctors';
-import { clearLoginData } from '../store/actions/login';
+import { fetchDoctors, addDoctor, updateDoctor  } from '../store/actions/doctors';
+import { clearLoginData, clearLogin } from '../store/actions/login';
 import { fetchSpecialities } from '../store/actions/specialities';
 import { Container, Typography, List, ListItem, Button, Grid, Paper, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const PAGE_SIZE = 10;
 
 const Admin = () => {
-  const { isAuthenticated, username} = useSelector(state => state.login);
+  const { username, isAdmin } = useSelector(state => state.login);
   const { doctors, isLoading, totalPages, currentPage } = useSelector(state => state.doctors);
   const { specialities } = useSelector(state => state.specialities);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [newDoctor, setNewDoctor] = useState({
     name: '',
     speciality: '',
   });
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  
+
+  const handleLogout = () => {
+    dispatch(clearLoginData());
+    navigate('/')
+  };
+
   useEffect(() => {
+    // Agrega el evento al cargar el componente
+    window.addEventListener('popstate', handleLogout);
+
+    // Limpia el evento al desmontar el componente para evitar posibles fugas de memoria
+    return () => {
+      window.removeEventListener('popstate', handleLogout);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/');  
+    }
     if(isLoading){
       dispatch(fetchDoctors(currentPage, PAGE_SIZE));
       dispatch(fetchSpecialities());
     }
   }, [currentPage, isLoading]);
-
-  const handleLogout = () => {
-    dispatch(clearLoginData());
-  };
+  
 
   const handleEditClick = async (doctor) => {
     setSelectedDoctor(doctor);
@@ -75,20 +90,29 @@ const Admin = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return <Link to="/" />;
-  }
+
 
   return (
     <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px', marginBottom: '20px', width: '100%' }}>
         <Typography variant="h3">Administrador</Typography>
         <Typography variant="h4">Bienvenido, {username} </Typography>
-        <Link to="/">
-          <Button variant="contained" color="primary" onClick={handleLogout}>
-            Cerrar Sesión
-          </Button>
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <div>
+            <Link to="/users">
+            <Button variant="contained" color="primary">
+              Usuarios
+            </Button>
+            </Link>
+          </div>
+          <div>
+            <Link to="/">
+              <Button variant="contained" color="primary" onClick={handleLogout}>
+                Cerrar Sesión
+              </Button>
+            </Link>
+          </div>
+        </div>
 
         <Grid container spacing={2} style={{ width: '100%' }}>
           <Grid item xs={12}>

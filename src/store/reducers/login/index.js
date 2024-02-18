@@ -5,6 +5,7 @@ const initialState = {
   isAuthenticated: sessionStorage.getItem('isAuthenticated') === 'true',
   isAdmin: sessionStorage.getItem('isAdmin') === 'true',
   userId: sessionStorage.getItem('userId') || '',
+  loginReady: false,
 };
   
   export const loginReducer = (state = initialState, action) => {
@@ -17,6 +18,7 @@ const initialState = {
           isAdmin: action.payload.isAdmin,
           userId: action.payload.userId,
           isAuthenticated: true,
+          loginReady: true
         };
 
         case 'SET_USERNAME':
@@ -39,6 +41,7 @@ const initialState = {
             token: '',
             userId: '',
             isAuthenticated: false,
+            loginReady: false,
           };
   
       default:
