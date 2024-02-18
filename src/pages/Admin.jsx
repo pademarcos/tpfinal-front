@@ -22,7 +22,7 @@ const Admin = () => {
 
   const handleLogout = () => {
     dispatch(clearLoginData());
-    navigate('/')
+    navigate('/');
   };
 
   useEffect(() => {
