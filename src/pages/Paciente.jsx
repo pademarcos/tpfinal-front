@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchDoctors, fetchDoctorsBySpeciality } from '../store/actions/doctors';
 import { fetchSpecialities } from '../store/actions/specialities';
 import { clearLoginData } from '../store/actions/login';
+import { fetchReservedAppointments } from '../store/actions/appointments';
 import { Container, Grid, FormControl, MenuItem, InputLabel, Select, Typography, List, ListItem, Button, Paper } from '@mui/material';
 
 const Paciente = () => {
@@ -14,8 +15,10 @@ const Paciente = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const dispatch = useDispatch();
+
    useEffect(() => {
       dispatch(fetchSpecialities());
+      dispatch(fetchReservedAppointments());
    }, [dispatch]);
 
   const handleSpecialityChange = (event) => {
@@ -40,19 +43,25 @@ const Paciente = () => {
   }
 
   return (
-    <Container>
+    <Container><Typography variant="h3">Gestor de Turnos</Typography>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
         <>
-          <Typography variant="h3">Bienvenido, {username} </Typography>
+          <Typography variant="h3">Bienvenido, {username} </Typography>          
+          <Link to="/paciente/mis-turnos">
+            <Button variant="contained" color="primary" style={{ marginLeft: '10px' }}>
+              Mis Turnos
+            </Button>
+          </Link>
           <Link to="/">
             <Button variant="contained" color="primary" onClick={handleLogout}>
               Cerrar Sesión
             </Button>
           </Link>
         </>
-        <Typography variant="h3">Pacientes</Typography>
+        
         <Typography variant="h5">Seleccione una especialidad:</Typography>
         <Grid>
+
           <FormControl fullWidth style={{ marginBottom: '10px' }}>
             <InputLabel>Especialidad</InputLabel>
             <Select

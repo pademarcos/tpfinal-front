@@ -2,6 +2,7 @@ const initialState = {
     reservationError: null,
     reservedAppointments: [],
     addAppointmentError: null,
+    fetchReservedAppointmentsError: null,
   };
   
   export const appointmentsReducer = (state = initialState, action) => {
@@ -31,6 +32,19 @@ const initialState = {
         return {
           ...state,
           addAppointmentError: action.payload,
+        };
+
+      case 'FETCH_RESERVED_APPOINTMENTS_SUCCESS':
+        return {
+          ...state,
+          fetchReservedAppointmentsError: null,
+          reservedAppointments: action.payload,
+        };
+  
+      case 'FETCH_RESERVED_APPOINTMENTS_FAILURE':
+        return {
+          ...state,
+          fetchReservedAppointmentsError: action.payload,
         };
   
       default:

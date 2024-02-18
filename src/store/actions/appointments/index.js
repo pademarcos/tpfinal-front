@@ -4,7 +4,7 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Incluir el token de autenticación !!!!!!!
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({ appointmentId }),
       });
@@ -29,5 +29,20 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
       dispatch({ type: 'ADD_APPOINTMENT_SUCCESS' });
     } catch (error) {
       dispatch({ type: 'ADD_APPOINTMENT_FAILURE', payload: error.message });
+    }
+  };
+
+  export const fetchReservedAppointments = () => async (dispatch) => {
+    try {
+      const userId = sessionStorage.getItem('userId'); 
+        console.log(userId)
+      const response = await fetch(`http://localhost:3001/api/appointments/listByPatient/${userId}`);
+      const data = await response.json();
+
+      console.log(data)
+  
+      dispatch({ type: 'FETCH_RESERVED_APPOINTMENTS_SUCCESS', payload: data.appointments });
+    } catch (error) {
+      dispatch({ type: 'FETCH_RESERVED_APPOINTMENTS_FAILURE', payload: error.message });
     }
   };
