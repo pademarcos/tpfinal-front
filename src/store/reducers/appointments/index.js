@@ -72,6 +72,18 @@ const initialState = {
           cancelAppointmentError: action.payload,
           isLoading: false
         };
+
+      case 'DELETE_APPOINTMENT_SUCCESS':
+        return {
+          ...state,
+          data: state.data.filter(appointment => appointment._id !== action.payload.appointmentId),
+        };
+  
+      case 'DELETE_APPOINTMENT_FAILURE':
+        return {
+          ...state,
+          deleteAppointmentError: action.payload,
+        };
   
       default:
         return state;

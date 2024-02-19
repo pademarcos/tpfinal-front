@@ -40,7 +40,7 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
         },
         body: JSON.stringify({ doctor: doctorId, date }),
       });
@@ -60,5 +60,21 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
       dispatch({ type: 'FETCH_RESERVED_APPOINTMENTS_SUCCESS', payload: data.appointments });
     } catch (error) {
       dispatch({ type: 'FETCH_RESERVED_APPOINTMENTS_FAILURE', payload: error.message });
+    }
+  };
+
+  export const deleteAppointment = (appointmentId) => async (dispatch) => {
+    try {
+      await fetch(`http://localhost:3001/api/appointments/delete/${appointmentId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
+        },
+      });
+  
+      dispatch({ type: 'DELETE_APPOINTMENT_SUCCESS', payload: { appointmentId } });
+    } catch (error) {
+      dispatch({ type: 'DELETE_APPOINTMENT_FAILURE', payload: error.message });
     }
   };

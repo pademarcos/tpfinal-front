@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getDoctorDetails } from '../store/actions/doctors';
-import { addAppointment } from '../store/actions/appointments';
+import { addAppointment, deleteAppointment } from '../store/actions/appointments';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Typography, Paper, Button, List, ListItem } from '@mui/material';
 import AppointmentForm from '../components/AppointmentForm';
@@ -30,6 +30,11 @@ const DoctorDetails = () => {
     toggleForm();
   };
 
+  const handleDeleteAppointment = (appointmentId) => {
+    dispatch(deleteAppointment(appointmentId));
+    dispatch(getDoctorDetails(doctorId));
+  };
+
   useEffect(() => {
    dispatch(getDoctorDetails(doctorId));
   }, [doctorId, dispatch]);
@@ -45,12 +50,15 @@ const DoctorDetails = () => {
             <Typography variant="h6">Especialidad: {doctorDetails.doctor.speciality ? doctorDetails.doctor.speciality.name : 'Especialidad no disponible'}</Typography>
 
             <Typography variant="h5">Turnos Disponibles</Typography>
-            {doctorDetails?.appointments?.data ? (
-              <List>
-                {doctorDetails?.appointments.data.map(appointment => (
-                  <ListItem key={appointment._id}>
-                    Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
-                  </ListItem>
+        {doctorDetails?.appointments?.data ? (
+          <List>
+            {doctorDetails?.appointments.data.map(appointment => (
+              <ListItem key={appointment._id}>
+                Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
+                <Button variant="outlined" color="secondary" onClick={() => handleDeleteAppointment(appointment._id)}>
+                  Borrar
+                </Button>
+              </ListItem>
                 ))}
               </List>
             ) : (
