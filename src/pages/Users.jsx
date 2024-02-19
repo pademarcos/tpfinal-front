@@ -82,9 +82,9 @@ const Users = () => {
                   <div key={user._id}>
                     <ListItem style={{ display: 'flex', alignItems: 'center' }}>
                       <div style={{ flex: '1' }}>
-                        <Typography variant="h6">Usuario: {user.username}</Typography>
-                        <Typography variant="h6">Email: {user.email}</Typography>
-                        <Typography variant="h6">DNI: {user.dni}</Typography>
+                        <Typography >Usuario: {user.username}</Typography>
+                        <Typography >Email: {user.email}</Typography>
+                        <Typography >DNI: {user.dni}</Typography>
                       </div>
                       <div style={{ marginLeft: '20px' }}>
                         <Button variant="contained" onClick={() => handleShowAppointments(user)}>

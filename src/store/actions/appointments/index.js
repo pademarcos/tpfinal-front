@@ -8,7 +8,7 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
         },
         body: JSON.stringify({ appointmentId }),
       });
-  
+      dispatch({type: 'START_LOADING'});
       dispatch({ type: 'RESERVE_APPOINTMENT_SUCCESS', payload: { appointmentId } });
     } catch (error) {
       dispatch({ type: 'RESERVE_APPOINTMENT_FAILURE', payload: error.message });
@@ -26,7 +26,7 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
         body: JSON.stringify({ appointmentId, userId }),
       });
 
-  //dispatch({type: 'START_LOADING'})
+  // dispatch({type: 'START_LOADING'})
       dispatch({ type: 'CANCEL_APPOINTMENT_SUCCESS', payload: { appointmentId, userId } });
       
     } catch (error) {
@@ -56,6 +56,8 @@ export const reserveAppointment = (appointmentId, userId) => async (dispatch) =>
       const userId = sessionStorage.getItem('userId'); 
       const response = await fetch(`http://localhost:3001/api/appointments/listByPatient/${userId}`);
       const data = await response.json();
+
+      dispatch({type: 'START_LOADING'})
   
       dispatch({ type: 'FETCH_RESERVED_APPOINTMENTS_SUCCESS', payload: data.appointments });
     } catch (error) {

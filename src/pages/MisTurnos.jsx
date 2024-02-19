@@ -53,9 +53,9 @@ const MisTurnos = () => {
                   <Typography variant="body1">
                     Fecha: {new Date(appointment.date).toLocaleString()}
                   </Typography>
-                  <IconButton onClick={() => handleCancelAppointment(appointment._id)} color="primary">
-                    <CancelIcon />
-                  </IconButton>
+                  <Button onClick={() => handleCancelAppointment(appointment._id)} color="primary" variant="contained">
+                    Cancelar Turno
+                  </Button>
                 </ListItem>
               );
             })

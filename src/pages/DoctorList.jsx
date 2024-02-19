@@ -10,6 +10,7 @@ const DoctorList = () => {
   const { doctorDetails } = useSelector(state => state.doctors);
   const userId = useSelector(state => state.login.userId);
   const username = useSelector(state => state.login.username);
+  const reservedAppointments = useSelector(state => state.appointments.reservedAppointments);
   const dispatch = useDispatch();
   const { doctorId } = useParams();
 
@@ -38,21 +39,21 @@ const DoctorList = () => {
             {doctorDetails?.appointments?.data ? (
               <List>
                 {doctorDetails?.appointments.data.map(appointment => (
-            <ListItem key={appointment._id}>
-            Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
-
-            {appointment.isReserved ? (
-              <Typography variant="body1">Reservado</Typography>
-            ) : (
-              <Button
-                variant="contained"
-                style={{ marginTop: '10px' }}
-                onClick={() => handleReserveAppointment(appointment._id, userId)}
-              >
-                Reservar
-              </Button>
-            )}
-          </ListItem>
+                  <ListItem key={appointment._id}>
+                    Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
+                    {appointment.isReserved ? (
+                      <Typography variant="body1">Reservado</Typography>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        style={{ marginTop: '10px' }}
+                        onClick={() => handleReserveAppointment(appointment._id, userId)}
+                        disabled={reservedAppointments.includes(appointment._id)} // Deshabilita el botón si ya está reservado
+                      >
+                        Reservar
+                      </Button>
+                    )}
+                  </ListItem>
                 ))}
               </List>
             ) : (

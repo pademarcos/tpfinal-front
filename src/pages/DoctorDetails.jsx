@@ -50,15 +50,17 @@ const DoctorDetails = () => {
             <Typography variant="h6">Especialidad: {doctorDetails.doctor.speciality ? doctorDetails.doctor.speciality.name : 'Especialidad no disponible'}</Typography>
 
             <Typography variant="h5">Turnos Disponibles</Typography>
-        {doctorDetails?.appointments?.data ? (
-          <List>
-            {doctorDetails?.appointments.data.map(appointment => (
-              <ListItem key={appointment._id}>
-                Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
-                <Button variant="outlined" color="secondary" onClick={() => handleDeleteAppointment(appointment._id)}>
-                  Borrar
-                </Button>
-              </ListItem>
+            {doctorDetails?.appointments?.data ? (
+              <List>
+                {doctorDetails?.appointments.data.map(appointment => (
+                  <ListItem key={appointment._id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                    <div>
+                      Fecha y Hora: {new Date(appointment.date).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
+                    </div>
+                    <Button variant="outlined" color="secondary" onClick={() => handleDeleteAppointment(appointment._id)}>
+                      Borrar
+                    </Button>
+                  </ListItem>
                 ))}
               </List>
             ) : (
@@ -72,12 +74,14 @@ const DoctorDetails = () => {
             {showForm && (
 
               <div style={{ marginTop: '10px', marginRight: '20px'}}>
+                
                         <AppointmentForm
                         selectedDate={selectedDate}
                         onDateChange={handleDateChange}
                         onAddAppointment={handleAddAppointment}
                       />
                          {addAppointmentError && <Typography variant="body1" color="error">{addAppointmentError}</Typography>}
+                         <Typography variant="body1">de Lunes a Viernes de 9 a 18</Typography>
                       </div>
             )}
             
