@@ -26,10 +26,7 @@ const Admin = () => {
   };
 
   useEffect(() => {
-    // Agrega el evento al cargar el componente
     window.addEventListener('popstate', handleLogout);
-
-    // Limpia el evento al desmontar el componente para evitar posibles fugas de memoria
     return () => {
       window.removeEventListener('popstate', handleLogout);
     };
