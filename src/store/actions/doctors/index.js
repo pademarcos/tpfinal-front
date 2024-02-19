@@ -32,17 +32,27 @@ export const addDoctor = (newDoctor, token) => async dispatch => {
   }
 };
 
-export const getDoctorDetails = (doctorId) => async dispatch => {
+export const getDoctorDetailsSuccess = (doctorDetails) => {
+  return { type: 'GET_DOCTOR_DETAILS_SUCCESS', payload: doctorDetails };
+};
+
+export const getDoctorDetailsFailure = (error) => {
+  return { type: 'GET_DOCTOR_DETAILS_FAILURE', payload: error };
+};
+
+export const getDoctorDetails = (doctorId) => async (dispatch) => {
   try {
     const response = await fetch(`http://localhost:3001/api/doctors/details/${doctorId}`);
     const data = await response.json();
-    dispatch({ type: 'GET_DETAILS', payload: data })
-    
+    dispatch(getDoctorDetailsSuccess(data));
+    dispatch({type: 'START_LOADING'})
   } catch (error) {
     console.error(`Error al obtener los detalles del médico con ID ${doctorId}:`, error);
-    dispatch({ type: 'GET_DETAILS', payload: null })
+    dispatch(getDoctorDetailsFailure(error.message));
   }
 };
+
+
 
 export const updateDoctor = (doctorData, token) => async (dispatch) => {
     try {

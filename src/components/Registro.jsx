@@ -36,7 +36,6 @@ const RegisterForm = ({ onCancel }) => {
             throw new Error(errorData.message || 'Error en el registro');
           }
     
-          // Registro exitoso, borra registro
           setUsername('');
           setPassword('');
           setRepeatPassword('');

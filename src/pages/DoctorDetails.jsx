@@ -25,7 +25,6 @@ const DoctorDetails = () => {
   };
 
   const handleAddAppointment = (date) => {
-    console.log(date)
     dispatch(addAppointment(doctorDetails.doctor._id, date));
     dispatch(getDoctorDetails(doctorId));
     toggleForm();

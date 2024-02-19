@@ -31,37 +31,38 @@ const Paciente = () => {
       dispatch(fetchDoctors(1, PAGE_SIZE));
     }
   };
+
+    const handleLogout = () => {
+    dispatch(clearLoginData());
+  };
+
   if (!isAuthenticated || (isAdmin !== null && isAdmin === true)) {
     return <Link to="/" />;
   }
-  const handleLogout = () => {
-    dispatch(clearLoginData());
-  };
-  
+
   if (!isAuthenticated) {
     return <Link to="/" />;
   }
 
   return (
-    <Container><Typography variant="h3">Gestor de Turnos</Typography>
+    <Container>
       <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
         <>
-          <Typography variant="h3">Bienvenido, {username} </Typography>          
-          <Link to="/paciente/mis-turnos">
-            <Button variant="contained" color="primary" style={{ marginLeft: '10px' }}>
-              Mis Turnos
-            </Button>
-          </Link>
-          <Link to="/">
-            <Button variant="contained" color="primary" onClick={handleLogout}>
-              Cerrar Sesión
-            </Button>
-          </Link>
-        </>
-        
-        <Typography variant="h5">Seleccione una especialidad:</Typography>
-        <Grid>
+          <Typography variant="h3">Bienvenido, {username} </Typography>
+          <Grid container justifyContent="space-between" alignItems="center" style={{ marginBottom: '10px' }}>
+            <Link to="/paciente/mis-turnos">
+              <Button variant="contained" color="primary">
+                Mis Turnos
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button variant="contained" color="primary" onClick={handleLogout}>
+                Cerrar Sesión
+              </Button>
+            </Link>
+          </Grid>
 
+          <Typography variant="h5">Seleccione una especialidad:</Typography>
           <FormControl fullWidth style={{ marginBottom: '10px' }}>
             <InputLabel>Especialidad</InputLabel>
             <Select
@@ -78,26 +79,27 @@ const Paciente = () => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-        {speciality && (
-          <>
-            <Typography variant="h5">Doctores de la especialidad: {speciality}</Typography>
-            <List>
-              {doctors && doctors.length > 0 ? (
-                doctors.map((doctor) => (
-                  <ListItem key={doctor._id}>
-                    <strong>{doctor.name}</strong> - Especialidad: {doctor.speciality.name}{' '}
-                    <Button component={Link} to={`/paciente/doctor_list/${doctor._id}`} variant="contained" style={{ marginRight: '10px' }}>
-                      Detalles
-                    </Button>
-                  </ListItem>
-                ))
-              ) : (
-                <Typography variant="body1">No hay doctores disponibles para esta especialidad.</Typography>
-              )}
-            </List>
-          </>
-        )}
+
+          {speciality && (
+            <>
+              <Typography variant="h5">Doctores de la especialidad: {speciality}</Typography>
+              <List>
+                {doctors && doctors.length > 0 ? (
+                  doctors.map((doctor) => (
+                    <ListItem key={doctor._id}>
+                      <strong>{doctor.name}</strong> - Especialidad: {doctor.speciality.name}{' '}
+                      <Button component={Link} to={`/paciente/doctor_list/${doctor._id}`} variant="contained" style={{ marginRight: '10px' }}>
+                        Detalles
+                      </Button>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Typography variant="body1">No hay doctores disponibles para esta especialidad.</Typography>
+                )}
+              </List>
+            </>
+          )}
+        </>
       </Paper>
     </Container>
   );

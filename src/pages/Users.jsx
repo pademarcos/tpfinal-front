@@ -22,7 +22,6 @@ const Users = () => {
   const { users, totalPages, currentPage, isLoading, isAdmin } = useSelector(state => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(users)
 
   const [selectedUser, setSelectedUser] = useState(null);
 
